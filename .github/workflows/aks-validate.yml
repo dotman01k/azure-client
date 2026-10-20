@@ -39,7 +39,7 @@ jobs:
       - name: Build sample image
         run: docker build -t portfolio-api:ci advanced-aks/app
       - name: Scan image for fixable high and critical vulnerabilities
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: portfolio-api:ci
           format: table
