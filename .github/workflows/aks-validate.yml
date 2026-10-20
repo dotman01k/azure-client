@@ -1,0 +1,49 @@
+name: AKS Validate
+on:
+  push:
+    paths: [advanced-aks/**, .github/workflows/aks-*.yml]
+  pull_request:
+    paths: [advanced-aks/**, .github/workflows/aks-*.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with: {terraform_version: 1.13.0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install PyYAML==6.0.2
+      - name: Terraform format and schema
+        working-directory: advanced-aks/infra
+        run: |
+          terraform fmt -check -recursive
+          terraform init -backend=false -input=false -lockfile=readonly
+          terraform validate
+      - name: API tests
+        run: python -m unittest discover -s advanced-aks/tests -v
+      - name: Shell syntax
+        run: |
+          for script in advanced-aks/scripts/*.sh; do bash -n "$script"; done
+      - uses: azure/setup-kubectl@v4
+        with: {version: v1.34.1}
+      - name: Kubernetes overlay checks
+        run: |
+          for environment in dev prod; do
+            kubectl kustomize "advanced-aks/k8s/app/overlays/$environment" > "/tmp/$environment.yaml"
+          done
+          python advanced-aks/tests/check_manifests.py /tmp/dev.yaml /tmp/prod.yaml
+      - name: Build sample image
+        run: docker build -t portfolio-api:ci advanced-aks/app
+      - name: Scan image for fixable high and critical vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: portfolio-api:ci
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: HIGH,CRITICAL

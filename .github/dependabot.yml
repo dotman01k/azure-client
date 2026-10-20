@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: {interval: weekly}
+  - package-ecosystem: docker
+    directory: /advanced-aks/app
+    schedule: {interval: weekly}
+  - package-ecosystem: terraform
+    directory: /advanced-aks/infra
+    schedule: {interval: weekly}
