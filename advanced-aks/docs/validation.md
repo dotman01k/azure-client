@@ -11,8 +11,11 @@ Created on 20 October 2026 UTC.
 | Rendered manifest security and availability assertions | Passed for both overlays |
 | Shell syntax | Passed for every shell script |
 | GitHub Actions workflow syntax | Passed with actionlint 1.7.7 and declared custom runner label |
-| Full Terraform provider schema validation locally | Blocked by this execution environment's provider IPC socket restriction; enforced by the GitHub validation workflow |
-| Docker build and Trivy scan locally | Not executed: Docker is unavailable in the authoring environment; included in GitHub validation |
+| Full Terraform provider schema validation | Passed on GitHub Actions; local provider IPC is restricted |
+| Docker build | Passed on GitHub Actions; Docker is unavailable locally |
+| Trivy image vulnerability scan | Passed on GitHub Actions: no fixable HIGH/CRITICAL findings blocked the build |
 | Azure provisioning and workload identity integration | Not executed; requires configured Azure subscription, identities, state backend and connected runner |
 
 The repository's AKS Validate workflow is the authoritative result for cloud-independent provider validation and container build/scan on a GitHub-hosted runner. Check its latest run before deploying. No Terraform apply, Azure resource creation or real secret upload occurred while creating this project.
+
+GitHub validation run: https://github.com/dotman01k/azure-client/actions/runs/39373255805

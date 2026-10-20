@@ -1,8 +1,10 @@
 # Advanced AKS deployment platform
 
+[![AKS Validate](https://github.com/dotman01k/azure-client/actions/workflows/aks-validate.yml/badge.svg)](https://github.com/dotman01k/azure-client/actions/workflows/aks-validate.yml)
+
 An Azure portfolio and practical deployment project by Dotun Agbeluyi. It demonstrates how to provision and operate AKS with infrastructure as code, separate infrastructure and application identities, controlled releases, and Kubernetes security controls.
 
-**Status:** Source implementation with local validation. Azure deployment, private DNS connectivity, quota availability, and end-to-end rollout must be verified in your own subscription. Pushing this repository does not deploy Azure resources.
+**Status:** Terraform schema validation, API tests, Kubernetes checks, Docker build and vulnerability scan passed in GitHub Actions. Azure deployment, private DNS connectivity, quota availability, and end-to-end rollout must be verified in your own subscription. Pushing this repository does not deploy Azure resources.
 
 ## What is included
 
