@@ -24,7 +24,7 @@ jobs:
       KEY_VAULT_NAME: ${{ vars.KEY_VAULT_NAME }}
       WORKLOAD_CLIENT_ID: ${{ vars.WORKLOAD_CLIENT_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: azure/login@v2
         with:
           client-id: ${{ vars.INFRA_CLIENT_ID }}
